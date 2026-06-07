@@ -14,10 +14,12 @@
 [![Links](https://github.com/denisecase/dc-up/actions/workflows/links.yml/badge.svg?branch=main)](https://github.com/denisecase/dc-up/actions/workflows/links.yml)
 [![Dependabot](https://img.shields.io/badge/Dependabot-enabled-brightgreen.svg)](https://github.com/denisecase/dc-up/security)
 
-> Structural Explainability (SE) Manifest Schema
+> > Command-line tool for bringing repositories up
+> to a managed baseline using layered canonical templates.
 
-This repository defines the canonical `SE_MANIFEST.toml` schema
-for the Structural Explainability ecosystem.
+## Template Source
+
+- [templates](https://github.com/denisecase/templates)
 
 ## Update a Repo based on Templates
 
