@@ -13,6 +13,14 @@ and this project adheres to **[Semantic Versioning](https://semver.org/spec/v2.0
 
 ---
 
+## [0.1.1] - 2026-06-06
+
+### Changed
+
+- Release and README.md
+
+---
+
 ## [0.1.0] - 2026-06-06
 
 ### Added
@@ -74,9 +82,6 @@ uv run python -c "import shutil; from pathlib import Path; shutil.rmtree(Path('d
 
 uv build
 uvx twine check dist/*
-
-uvx --from dist/dc_up-0.1.0-py3-none-any.whl dc-up
-uvx --from dist/dc_up-0.1.0-py3-none-any.whl dc-up todo
 ```
 
 ### Task 4. Commit, push, tag
@@ -103,7 +108,8 @@ git push origin :refs/tags/vX.Z.Y
 
 ## Links
 
-[Unreleased]: https://github.com/denisecase/dc-up/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/denisecase/dc-up/compare/v0.1.1...HEAD
+[0.1.1]: https://github.com/denisecase/dc-up/releases/tag/v0.1.1
 [0.1.0]: https://github.com/denisecase/dc-up/releases/tag/v0.1.0
 
 <!-- markdownlint-enable MD024 -->

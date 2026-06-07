@@ -4,7 +4,6 @@
 [![Docs Site](https://img.shields.io/badge/docs-site-blue?logo=github)](https://denisecase.github.io/dc-up/)
 [![Repo](https://img.shields.io/badge/repo-GitHub-black?logo=github)](https://github.com/denisecase/dc-up)
 [![Python 3.14](https://img.shields.io/badge/python-3.14%2B-blue?logo=python)](./pyproject.toml)
-[![Python 3.14 Ready](https://github.com/denisecase/dc-up/actions/workflows/python-315-ready.yml/badge.svg?branch=main)](https://github.com/denisecase/dc-up/actions/workflows/python-315-ready.yml)
 [![License](https://img.shields.io/badge/license-MIT-yellow.svg)](./LICENSE)
 
 [![CI](https://github.com/denisecase/dc-up/actions/workflows/ci-python-zensical.yml/badge.svg?branch=main)](https://github.com/denisecase/dc-up/actions/workflows/ci-python-zensical.yml)
