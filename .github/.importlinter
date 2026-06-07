@@ -1,0 +1,19 @@
+# .github/.importlinter
+# contract checks (should be all kept, 0 broken)
+# $env:PYTHONPATH = "src"
+# uvx --with-editable . --from import-linter lint-imports --config .github/.importlinter
+
+[importlinter]
+root_package = dc_up
+
+[importlinter:contract:layers]
+name = layering
+type = layers
+layers =
+    dc_up.cli
+    dc_up.generate
+    dc_up.translate
+    dc_up.load
+    dc_up.model
+    dc_up._narrow
+    dc_up.errors
