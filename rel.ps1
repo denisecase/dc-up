@@ -191,6 +191,11 @@ Invoke-Step "F5) Smoke test installed wheel todo command" "uvx --from <built-whe
     uvx --from $wheel.FullName dc-up todo --root .
 }
 
-Invoke-Step "F6) Smoke test installed package metadata" "uv run python -c `"from importlib.metadata import version; print(version('dc-up'))`"" {
-    uv run python -c "from importlib.metadata import version; print(version('dc-up'))"
+Invoke-Step "F6) Smoke test installed wheel package metadata" "uvx --from <built-wheel> python -c `"from importlib.metadata import version; print(version('dc-up'))`"" {
+    $wheel = Get-ChildItem dist -Filter "*.whl" | Sort-Object LastWriteTime | Select-Object -Last 1
+    if (-not $wheel) {
+        throw "No wheel found in dist/."
+    }
+
+    uvx --from $wheel.FullName python -c "from importlib.metadata import version; print(version('dc-up'))"
 }
