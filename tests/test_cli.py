@@ -3,8 +3,6 @@
 Tests for cli.py - argument parsing and dispatch.
 """
 
-
-
 from dc_up.cli import build_parser
 
 

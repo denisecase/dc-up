@@ -1,7 +1,5 @@
 """Shared typed records."""
 
-
-
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Literal

@@ -22,54 +22,67 @@
 # Surfaces are emitted by codeowners_order, then surface id.
 
 # Surface: package-source (role: maintainer)
-/src/**                         @denisecase/maintainers
+/src/**                         @denisecase
+
+# Surface: baseline-update-engine (role: security)
+/src/dc_up/baseline.py          @denisecase
+/src/dc_up/detect.py            @denisecase
+/src/dc_up/fetch.py             @denisecase
+/src/dc_up/plan.py              @denisecase
+/src/dc_up/render.py            @denisecase
 
 # Surface: test-suite (role: maintainer)
-/tests/**                       @denisecase/maintainers
-
-# Surface: manifest-schema-source (role: spec)
-/manifest-schema.toml           @denisecase/spec
+/tests/**                       @denisecase
 
 # Surface: build-and-package-configuration (role: maintainer)
-/pyproject.toml                 @denisecase/maintainers
-/uv.lock                        @denisecase/maintainers
+/pyproject.toml                 @denisecase
+/uv.lock                        @denisecase
 
 # Surface: repository-hygiene-configuration (role: maintainer)
-/.editorconfig                  @denisecase/maintainers
-/.gitattributes                 @denisecase/maintainers
-/.gitignore                     @denisecase/maintainers
-/.pre-commit-config.yaml        @denisecase/maintainers
-/.markdownlint-cli2.yaml        @denisecase/maintainers
+/.editorconfig                  @denisecase
+/.gitattributes                 @denisecase
+/.gitignore                     @denisecase
+/.markdownlint-cli2.yaml        @denisecase
+/.pre-commit-config.yaml        @denisecase
+
+# Surface: documentation-tooling-configuration (role: maintainer)
+/zensical.toml                  @denisecase
 
 # Surface: documentation-sources (role: maintainer)
-/docs/**                        @denisecase/maintainers
+/docs/**                        @denisecase
 
 # Surface: repository-history (role: maintainer)
-/CHANGELOG.md                   @denisecase/maintainers
-/DECISIONS.md                   @denisecase/maintainers
+/CHANGELOG.md                   @denisecase
+/DECISIONS.md                   @denisecase
 
 # Surface: repository-identity (role: maintainer)
-/CITATION.cff                   @denisecase/maintainers
-/README.md                      @denisecase/maintainers
-/SE_MANIFEST.toml               @denisecase/maintainers
+/CITATION.cff                   @denisecase
+/README.md                      @denisecase
 
 # Surface: repository-governance (role: maintainer)
-/AGENTS.md                      @denisecase/maintainers
-/ANNOTATIONS.md                 @denisecase/maintainers
-/CONTRIBUTING.md                @denisecase/maintainers
-/SECURITY.md                    @denisecase/maintainers
+/.annotations/**                @denisecase
+/AGENTS.md                      @denisecase
+/ANNOTATIONS.md                 @denisecase
+/CONTRIBUTING.md                @denisecase
+/SECURITY.md                    @denisecase
 
 # Surface: release-and-ci-workflows (role: release)
-/.github/workflows/**           @denisecase/release
-/.github/dependabot.yml         @denisecase/release
+/.github/workflows/**           @denisecase
+/.github/dependabot.yml         @denisecase
 
-# Surface: generated-codeowners (role: authority_projection)
-/.github/CODEOWNERS             @denisecase/authority-projection
+# Surface: build-artifacts (role: release)
+/dist/**                        @denisecase
+/site/**                        @denisecase
 
 # Surface: security-configuration (role: security)
-/.github/lychee.toml            @denisecase/security
-/.github/.yamllint.yml          @denisecase/security
-/SECURITY.md                    @denisecase/security
+/.github/lychee.toml            @denisecase
+/.github/.yamllint.yml          @denisecase
+/SECURITY.md                    @denisecase
+
+# Surface: template-source-trust-boundary (role: security)
+/src/**                         @denisecase
+/README.md                      @denisecase
+/docs/**                        @denisecase
 
 # Surface: authority-manifest (role: owner)
-/.accountability/surfaces.toml  @denisecase/owners
+/.accountability/surfaces.toml  @denisecase

@@ -1,12 +1,14 @@
 """Build, print, and apply update plans."""
 
-
-
 from pathlib import Path
 
-from dc_up.baseline import MANAGED_FILES
 from dc_up.errors import UnsafePathError
-from dc_up.fetch import TemplateSource, fetch_template_text
+from dc_up.fetch import (
+    TemplateFile,
+    TemplateSource,
+    fetch_template_text,
+    list_template_files,
+)
 from dc_up.render import render_template
 from dc_up.types import FileStatus, PlannedFile, RepositoryContext, UpdatePlan
 
@@ -22,15 +24,20 @@ def build_update_plan(
     target: RepositoryContext,
     source: TemplateSource,
 ) -> UpdatePlan:
-    """Build an update plan for managed baseline files."""
+    """Build an update plan from discovered template files."""
     planned_files: list[PlannedFile] = []
 
-    for managed_path in MANAGED_FILES:
+    template_files = list_template_files(
+        source=source,
+        layers=list(target.layers),
+    )
+
+    for template_file in template_files:
         planned_files.append(
-            _plan_one_file(
+            _plan_one_template_file(
                 target=target,
                 source=source,
-                managed_path=managed_path,
+                template_file=template_file,
             )
         )
 
@@ -54,9 +61,9 @@ def print_update_plan(plan: UpdatePlan, *, write: bool) -> None:
 
     print("[dc-up] managed files")  # noqa: T201
     for file in plan.files:
-        status = _status_label(file.status)
-        source = f" [{file.source_layer}]" if file.source_layer else ""
-        print(f"{status:13} {file.path.as_posix()}{source}")  # noqa: T201
+        status = _status_label(file.status, write=write)
+        source_label = f" [{file.source_layer}]" if file.source_layer else ""
+        print(f"{status:13} {file.path.as_posix()}{source_label}")  # noqa: T201
 
     print("")  # noqa: T201
     print(  # noqa: T201
@@ -86,44 +93,35 @@ def write_update_plan(plan: UpdatePlan) -> None:
         target_path.write_text(file.desired_text, encoding="utf-8")
 
 
-def _plan_one_file(
+def _plan_one_template_file(
     *,
     target: RepositoryContext,
     source: TemplateSource,
-    managed_path: str,
+    template_file: TemplateFile,
 ) -> PlannedFile:
-    """Plan one managed file using additive layer override semantics."""
-    desired_text: str | None = None
-    source_layer: str | None = None
-    source_path: str | None = None
+    """Plan one discovered template file."""
+    template_text = fetch_template_text(
+        source=source,
+        layer=template_file.layer,
+        path=template_file.target_path,
+    )
 
-    for layer in target.layers:
-        template_text = fetch_template_text(
-            source=source,
-            layer=layer,
-            path=managed_path,
-        )
-
-        if template_text is None:
-            continue
-
-        desired_text = render_template(template_text, target)
-        source_layer = layer
-        source_path = f"{layer}/{managed_path}"
-
-    relative_path = Path(managed_path)
-
-    if desired_text is None:
+    if template_text is None:
         return PlannedFile(
-            path=relative_path,
+            path=Path(template_file.target_path),
             status="no-template",
-            source_layer=None,
-            source_path=None,
-            current_text=_read_current_text(target.root, relative_path),
+            source_layer=template_file.layer,
+            source_path=f"{template_file.layer}/{template_file.template_path}",
+            current_text=_read_current_text(
+                target.root, Path(template_file.target_path)
+            ),
             desired_text=None,
         )
 
+    desired_text = render_template(template_text, target)
+    relative_path = Path(template_file.target_path)
     current_text = _read_current_text(target.root, relative_path)
+
     status = _file_status(
         current_text=current_text,
         desired_text=desired_text,
@@ -132,8 +130,8 @@ def _plan_one_file(
     return PlannedFile(
         path=relative_path,
         status=status,
-        source_layer=source_layer,
-        source_path=source_path,
+        source_layer=template_file.layer,
+        source_path=f"{template_file.layer}/{template_file.template_path}",
         current_text=current_text,
         desired_text=desired_text,
     )
@@ -193,14 +191,14 @@ def _status_counts(plan: UpdatePlan) -> dict[FileStatus, int]:
     return counts
 
 
-def _status_label(status: FileStatus) -> str:
+def _status_label(status: FileStatus, *, write: bool) -> str:
     """Return display label for a file status."""
     match status:
         case "current":
             return "CURRENT"
         case "changed":
-            return "WOULD CHANGE"
+            return "CHANGED" if write else "WOULD CHANGE"
         case "missing":
-            return "WOULD ADD"
+            return "ADDED" if write else "WOULD ADD"
         case "no-template":
             return "NO TEMPLATE"

@@ -1,5 +1,5 @@
 # ============================================================
-# .accountability/surfaces.toml (ALL-PY-PYPI)
+# .accountability/surfaces.toml (dc-up)
 # ============================================================
 # Updated: 2026-06-06
 #
@@ -143,13 +143,13 @@ ai_max_authority = "drafting"
 id = "baseline-update-engine"
 object_kind = "directory"
 paths = [
-    "src/**/apply*.py",
-    "src/**/fetch*.py",
-    "src/**/render*.py",
-    "src/**/template*.py",
-    "src/**/baseline*.py",
+    "src/dc_up/baseline.py",
+    "src/dc_up/detect.py",
+    "src/dc_up/fetch.py",
+    "src/dc_up/plan.py",
+    "src/dc_up/render.py",
 ]
-description = "Implementation surfaces that fetch canonical template files, calculate target repository changes, render values, and write managed baseline files."
+description = "Implementation surfaces that detect repository shape, fetch canonical template files, calculate target repository changes, render values, and write managed baseline files."
 oversight_role = "security"
 codeowners_order = 105
 

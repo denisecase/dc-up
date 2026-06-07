@@ -5,7 +5,6 @@ import tomllib
 from typing import cast
 
 __all__ = [
-    "MANAGED_FILES",
     "PRESERVE_PATTERNS",
     "infer_layers",
 ]
@@ -17,26 +16,6 @@ COURSE_PREFIXES: tuple[str, ...] = (
     "streaming-",
     "cintel-",
     "nlp-",
-)
-
-MANAGED_FILES: tuple[str, ...] = (
-    ".editorconfig",
-    ".gitattributes",
-    ".gitignore",
-    ".markdownlint-cli2.yaml",
-    ".pre-commit-config.yaml",
-    "LICENSE",
-    "shape.ps1",
-    "zensical.toml",
-    ".github/.yamllint.yml",
-    ".github/dependabot.yml",
-    ".github/lychee.toml",
-    ".github/workflows/links.yml",
-    ".vscode/extensions.json",
-    "docs/index.md",
-    "docs/project-instructions.md",
-    "docs/your-files.md",
-    "docs/api.md",
 )
 
 

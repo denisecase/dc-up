@@ -1,19 +1,27 @@
+# ============================================================
 # .github/.importlinter
-# contract checks (should be all kept, 0 broken)
-# $env:PYTHONPATH = "src"
-# uvx --with-editable . --from import-linter lint-imports --config .github/.importlinter
+# ============================================================
+# Updated: 2026-06-06
+#
+# WHY: Validate that dc-up imports stay layered and understandable.
+# RUN:
+#   uvx --python 3.14 --with-editable . --from import-linter lint-imports --config .github/.importlinter
 
 [importlinter]
 root_package = dc_up
 
 [importlinter:contract:layers]
-name = layering
+name = dc-up layering
 type = layers
 layers =
     dc_up.cli
-    dc_up.generate
-    dc_up.translate
+    dc_up.commands
+    dc_up.plan
     dc_up.load
-    dc_up.model
-    dc_up._narrow
+    dc_up.fetch
+    dc_up.render
+    dc_up.detect
+    dc_up.baseline
+    dc_up.todo
+    dc_up.types
     dc_up.errors

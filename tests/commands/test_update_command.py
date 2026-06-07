@@ -161,8 +161,7 @@ version = "0.1.0"
     assert exit_code == 0
     assert "WOULD ADD     .pre-commit-config.yaml [ALL-PY]" in captured.out
     assert (repo / ".pre-commit-config.yaml").read_text(encoding="utf-8") == (
-        "repos:\n"
-        "  - repo: python-layer\n"
+        "repos:\n  - repo: python-layer\n"
     )
 
 
