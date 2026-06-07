@@ -33,7 +33,7 @@ version = "0.1.0"
     assert "PROJECT TODO: example-python-repo" in captured.out
     assert "Review repo-specific surfaces:" in captured.out
     assert "  README.md" in captured.out
-    assert "  docs/project.md" in captured.out
+    assert "  docs/index.md" in captured.out
     assert "  pyproject.toml" in captured.out
     assert "Confirm:" in captured.out
     assert "  repo-specific project description is accurate" in captured.out

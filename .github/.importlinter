@@ -17,7 +17,6 @@ layers =
     dc_up.cli
     dc_up.commands
     dc_up.plan
-    dc_up.load
     dc_up.fetch
     dc_up.render
     dc_up.detect

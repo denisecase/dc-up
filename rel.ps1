@@ -130,8 +130,8 @@ Invoke-Step "D1) Build documentation" "uv run python -m zensical build" {
 # E) Architectural and code-health checks
 # ============================================================
 
-Invoke-Step "E0) Check import layers" "uvx --python 3.13 --from import-linter lint-imports --config .github/.importlinter" {
-    uvx --python 3.14 --from import-linter lint-imports --config .github/.importlinter
+Invoke-Step "E0) Check import layers" "uvx --python 3.14 --with-editable . --from import-linter lint-imports --config .github/.importlinter" {
+    uvx --python 3.14 --with-editable . --from import-linter lint-imports --config .github/.importlinter
 }
 
 Invoke-Step "E1) Find dead code" "uvx --with-editable . vulture src/dc_up" {
