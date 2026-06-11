@@ -39,7 +39,7 @@ version = "0.1.0"
         encoding="utf-8",
     )
     (templates / "ALL-PY" / "zensical.toml.template").write_text(
-        'repo = "{{ repo_name }}"\nsite = "{{ site_url }}"\n',
+        'repo = "{{github_handle}}/{{ repo_name }}"\nsite = "{{ site_url }}"\n',
         encoding="utf-8",
     )
 
@@ -55,7 +55,7 @@ version = "0.1.0"
 
     assert exit_code == 0
     assert "[dc-up] DRY RUN" in captured.out
-    assert "[dc-up] repo: denisecase/example-python-repo" in captured.out
+    assert "[dc-up] repo: example-python-repo" in captured.out
     assert "[dc-up] layers: ALL -> ALL-PY -> ALL-PY-SRC" in captured.out
     assert "WOULD ADD     .editorconfig [ALL]" in captured.out
     assert "WOULD ADD     .pre-commit-config.yaml [ALL-PY]" in captured.out
@@ -94,7 +94,7 @@ version = "0.1.0"
         encoding="utf-8",
     )
     (templates / "ALL-PY" / "zensical.toml.template").write_text(
-        'repo = "{{ repo_name }}"\nsite = "{{ site_url }}"\n',
+        'repo = "{{github_handle}}/{{ repo_name }}"\nsite = "{{ site_url }}"\n',
         encoding="utf-8",
     )
 

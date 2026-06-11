@@ -30,7 +30,7 @@ The initial layer model is:
 - `ALL`
 - `ALL-PY`
 - `ALL-PY-SRC`
-- `ALL-PY-PYPI`
+- `ALL-PY-SRC-PYPI`
 - `ALL-PY-NB`
 - `ALL-PY-KAFKA`
 - `ALL-TS`

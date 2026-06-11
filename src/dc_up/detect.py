@@ -12,7 +12,9 @@ __all__ = ["detect_repository"]
 
 
 GITHUB_REMOTE_RE = re.compile(
-    r"(?:git@github\.com:|https://github\.com/)(?P<repo>[^/\s]+/[^/\s]+?)(?:\.git)?/?$"
+    r"(?:git@github\.com:|https://github\.com/)"
+    r"(?P<owner>[^/\s]+)/(?P<repo>[^/\s]+?)"
+    r"(?:\.git)?/?$"
 )
 
 
@@ -23,25 +25,31 @@ def detect_repository(root: Path | None = None) -> RepositoryContext:
         root: Optional repository root. If None, detect from current directory.
 
     Returns:
-        Repository context used by planning and TODO generation.
+        Repository context used by planning and `TODO` generation.
 
     Raises:
         RepositoryDetectionError: If the target directory cannot be resolved.
     """
-    repo_root = _resolve_repo_root(root)
-    files = _snapshot_files(repo_root)
+    local_repo_root_directory: Path = _resolve_repo_root(root)
+    files = _snapshot_files(local_repo_root_directory)
 
-    repo_slug = repo_root.name
-    repo_name = _detect_repo_name(repo_root) or f"denisecase/{repo_slug}"
+    github_handle = _detect_github_handle(local_repo_root_directory) or "denisecase"
+    repo_name = local_repo_root_directory.name
 
-    repo_url = f"https://github.com/{repo_name}"
-    site_url = f"https://denisecase.github.io/{repo_slug}/"
+    repo_url = f"https://github.com/{github_handle}/{repo_name}"
+    site_url = f"https://{github_handle}.github.io/{repo_name}/"
 
-    layers = tuple(infer_layers(repo_root=repo_root, repo_slug=repo_slug, files=files))
+    layers = tuple(
+        infer_layers(
+            repo_root=local_repo_root_directory,
+            repo_name=repo_name,
+            files=files,
+        )
+    )
 
     return RepositoryContext(
-        root=repo_root,
-        repo_slug=repo_slug,
+        root=local_repo_root_directory,
+        github_handle=github_handle,
         repo_name=repo_name,
         repo_url=repo_url,
         site_url=site_url,
@@ -51,7 +59,17 @@ def detect_repository(root: Path | None = None) -> RepositoryContext:
 
 
 def _resolve_repo_root(root: Path | None) -> Path:
-    """Resolve the target repository root."""
+    """Resolve the target repository root on the local file system.
+
+    Args:
+        root: Optional starting path. If None, use current working directory.
+
+    Returns:
+        Resolved repository root path, for example: C:/Repos/dc-up
+
+    Raises:
+        RepositoryDetectionError: If the target directory cannot be resolved.
+    """
     start = Path.cwd() if root is None else root
     start = start.expanduser().resolve()
 
@@ -69,7 +87,17 @@ def _resolve_repo_root(root: Path | None) -> Path:
 
 
 def _snapshot_files(root: Path) -> set[str]:
-    """Return repository-relative file and directory markers."""
+    """Return repository-relative file and directory markers.
+
+    Args:
+        root: Repository root directory.
+
+    Returns:
+        Set of repository-relative paths for all files and directories,
+        for example: {
+            "README.md", "src/", "src/dc_up/", "src/dc_up/detect.py"
+        }
+    """
     result: set[str] = set()
 
     ignored_dirs = {
@@ -88,7 +116,7 @@ def _snapshot_files(root: Path) -> set[str]:
     for path in root.rglob("*"):
         rel = path.relative_to(root).as_posix()
 
-        if any(part in ignored_dirs for part in path.parts):
+        if any(part in ignored_dirs for part in path.relative_to(root).parts):
             continue
 
         if path.is_dir():
@@ -100,8 +128,15 @@ def _snapshot_files(root: Path) -> set[str]:
     return result
 
 
-def _detect_repo_name(root: Path) -> str | None:
-    """Infer owner/repo from .git/config if possible."""
+def _detect_github_handle(root: Path) -> str | None:
+    """Infer GitHub owner/handle from .git/config if possible.
+
+    Args:
+        root: Repository root directory.
+
+    Returns:
+        GitHub owner/handle if detected, otherwise None.
+    """
     git_config = root / ".git" / "config"
     if not git_config.exists():
         return None
@@ -121,4 +156,4 @@ def _detect_repo_name(root: Path) -> str | None:
     if match is None:
         return None
 
-    return match.group("repo")
+    return match.group("owner")

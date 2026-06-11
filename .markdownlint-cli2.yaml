@@ -1,12 +1,15 @@
 # ============================================================
-# .markdownlint-cli2.yaml (ALL)
+# .markdownlint-cli2.yaml (ALL-REPOS)
 # ============================================================
-# Updated: 2026-06-06
+# Updated: 2026-06-10
 #
 # WHY: Check authored Markdown while ignoring generated output,
 # dependency directories, virtual environments, caches, and build artifacts.
 # REQ: Markdown lint should check source documentation, not generated docs,
 # dependency trees, coverage output, or runtime artifacts.
+#
+# Run with:
+# npx markdownlint-cli2 --fix
 
 globs:
   - "**/*.md"
@@ -25,6 +28,7 @@ ignores:
   - "**/htmlcov/**"
   - "**/node_modules/**"
   - "**/site/**"
+  - ".github/CODEOWNERS"
   - ".mypy_cache/**"
   - ".nox/**"
   - ".pytest_cache/**"
@@ -44,7 +48,7 @@ config:
   default: true # WHY: Enable default Markdown rules as the project baseline.
 
   MD013:
-    line_length: 100
+    line_length: 100 # WHY: Keep authored prose readable in source and diffs.
     headings: false # WHY: Long headings may be needed for clarity.
     tables: false # WHY: Long table cells may be needed for readability.
     code_blocks: false # WHY: Long code lines should not be wrapped by Markdown lint.

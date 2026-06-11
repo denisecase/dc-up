@@ -38,17 +38,22 @@ function Invoke-Step {
 # A) Toolchain refresh
 # ============================================================
 
-Invoke-Step "A0) Update lock file" "uv lock --upgrade" {
+Invoke-Step "A1) Update lock file" "uv lock --upgrade" {
     uv lock --upgrade
 }
 
-Invoke-Step "A1) Sync Python tooling" "uv sync --extra dev --extra docs --upgrade" {
+Invoke-Step "A2) Sync Python tooling" "uv sync --extra dev --extra docs --upgrade" {
     uv sync --extra dev --extra docs --upgrade
 }
 
-Invoke-Step "A2) Install pre-commit hooks" "uvx pre-commit install" {
+Invoke-Step "A3) Install pre-commit hooks" "uvx pre-commit install" {
     uvx pre-commit install
 }
+
+Invoke-Step "A4) Autoupdate pre-commit hooks" "uvx pre-commit autoupdate" {
+    uvx pre-commit autoupdate
+}
+
 
 
 # ============================================================

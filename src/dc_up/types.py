@@ -25,7 +25,7 @@ class RepositoryContext:
     """Detected information about the target repository."""
 
     root: Path
-    repo_slug: str
+    github_handle: str
     repo_name: str
     repo_url: str
     site_url: str

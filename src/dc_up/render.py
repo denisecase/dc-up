@@ -8,7 +8,7 @@ __all__ = ["render_template"]
 def render_template(text: str, target: RepositoryContext) -> str:
     """Render simple repository identity tokens.
 
-    This is deliberately not a full template engine in v0.1.0.
+    This is deliberately not a full template engine.
 
     Args:
         text: Template text.
@@ -17,19 +17,16 @@ def render_template(text: str, target: RepositoryContext) -> str:
     Returns:
         Rendered text.
     """
-    replacements = {
-        "{{ repo_slug }}": target.repo_slug,
-        "{{repo_slug}}": target.repo_slug,
-        "{{ repo_name }}": target.repo_name,
-        "{{repo_name}}": target.repo_name,
-        "{{ repo_url }}": target.repo_url,
-        "{{repo_url}}": target.repo_url,
-        "{{ site_url }}": target.site_url,
-        "{{site_url}}": target.site_url,
+    tokens = {
+        "repo_name": target.repo_name,
+        "github_handle": target.github_handle,
+        "repo_url": target.repo_url,
+        "site_url": target.site_url,
     }
 
     rendered = text
-    for token, value in replacements.items():
-        rendered = rendered.replace(token, value)
+    for name, value in tokens.items():
+        rendered = rendered.replace(f"{{{{ {name} }}}}", value)
+        rendered = rendered.replace(f"{{{{{name}}}}}", value)
 
     return rendered

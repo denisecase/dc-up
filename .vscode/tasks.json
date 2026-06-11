@@ -1,0 +1,39 @@
+// ============================================================
+// .vscode/tasks.json (Structural Explainability)
+// ============================================================
+// Updated 2026-06-10
+
+// NOTE: Comments are not allowed in standard JSON files,
+// but Microsoft allows them in their .vscode config files.
+
+// WHY: Encode build commands as one-step tasks.
+
+// OBS: Commands route through uv/uvx, so no .venv path is referenced.
+// Tasks should run identically on WSL2, macOS, and Windows.
+// Multi-step tasks use use dependsOn + "sequence" (NOT &&) to work in PowerShell.
+
+// Run with:
+// Ctrl+Shift+B on Windows/Linux,
+// Cmd+Shift+B on macOS
+
+// THE HOTKEY IS AUTOMATIC:
+// Ctrl/Cmd+Shift+B is a built-in VS Code command ("Run Build Task" =
+// workbench.action.tasks.build).
+// It exists with no keybinding setup and no extension.
+// This file does not create the shortcut; it just makes a
+// task eligible for it via the build group below.
+
+// See https://code.visualstudio.com/docs/editor/tasks for more details on VSCode tasks.
+
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "docs: build",
+      "type": "shell",
+      "command": "uv run python -m zensical build",
+      "group": { "kind": "build", "isDefault": true },
+      "problemMatcher": []
+    }
+  ]
+}

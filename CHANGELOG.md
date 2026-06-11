@@ -13,6 +13,26 @@ and this project adheres to **[Semantic Versioning](https://semver.org/spec/v2.0
 
 ---
 
+## [0.1.2] - 2026-06-10
+
+### Changed
+
+- Restored Lychee link-check workflow.
+- Lychee behavior configured through `.github/lychee.toml`.
+- Added/updated managed baseline files for `AGENTS.md` guidance.
+- Clarified `ALL` versus `ALL-PY` agent instructions.
+- Moved Python-specific agent guidance to the `ALL-PY` layer.
+
+### Fixed
+
+- Repo identity fields separated as `github_handle`, `repo_name`, `repo_url`, and `site_url`.
+- Removed the combined `owner/repo` value from repository context.
+- Moved review surfaces from hard-coded Python constants into packaged TOML data.
+- Reduced report maintenance burden using detected buckets.
+- Fixed strict typing issues in config loading and validation.
+
+---
+
 ## [0.1.1] - 2026-06-06
 
 ### Changed
@@ -108,7 +128,8 @@ git push origin :refs/tags/vX.Z.Y
 
 ## Links
 
-[Unreleased]: https://github.com/denisecase/dc-up/compare/v0.1.1...HEAD
+[Unreleased]: https://github.com/denisecase/dc-up/compare/v0.1.2...HEAD
+[0.1.2]: https://github.com/denisecase/dc-up/releases/tag/v0.1.2
 [0.1.1]: https://github.com/denisecase/dc-up/releases/tag/v0.1.1
 [0.1.0]: https://github.com/denisecase/dc-up/releases/tag/v0.1.0
 

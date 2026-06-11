@@ -2,7 +2,7 @@
 
 from pathlib import Path
 import tomllib
-from typing import cast
+from typing import Literal, cast
 
 __all__ = [
     "PRESERVE_PATTERNS",
@@ -11,50 +11,100 @@ __all__ = [
 
 TomlTable = dict[str, object]
 
+# Single base stack classification per repo (first match wins, see _classify_stack).
+StackKind = Literal["ts", "notebook", "kafka", "pypi", "src"]
+
 COURSE_PREFIXES: tuple[str, ...] = (
-    "datafun-",
-    "streaming-",
     "cintel-",
+    "datafun-",
+    "insights-",
+    "ml-",
     "nlp-",
+    "streaming-",
 )
 
 
 PRESERVE_PATTERNS: tuple[str, ...] = (
     "README.md",
+    "artifacts/**",
+    "data/**",
     "docs/**",
+    "notebooks/**",
+    "sql/**",
     "src/**",
     "tests/**",
-    "notebooks/**",
-    "data/**",
-    "sql/**",
-    "artifacts/**",
 )
+
+
+# WHY: Base layers describe the repo's stack. Indexed by StackKind so the
+# classification and the layer list can't drift apart, and so the prefix
+# duplication (ALL, ALL-PY, ...) is declared once per kind, not per branch.
+BASE_LAYERS: dict[StackKind, tuple[str, ...]] = {
+    "kafka": ("ALL", "ALL-PY", "ALL-PY-KAFKA"),
+    "notebook": ("ALL", "ALL-PY", "ALL-PY-NB"),
+    "pypi": ("ALL", "ALL-PY", "ALL-PY-SRC", "ALL-PY-SRC-PYPI"),
+    "src": ("ALL", "ALL-PY", "ALL-PY-SRC"),
+    "ts": ("ALL", "ALL-TS"),
+}
+
+# WHY: Educational ("ALL-COURSE*") overrides, appended AFTER the base so the
+# ed versions win (last layer wins). ALL-COURSE is always first because it
+# overrides ALL; deeper course layers follow parent-first.
+# OBS: "ts" is unreachable for courses (course repos require pyproject.toml,
+#   which the "ts" classification excludes) - it's defensive.
+# OBS: "notebook" gets ALL-COURSE only; there is no ALL-COURSE-PY-NB defined.
+COURSE_OVERLAYS: dict[StackKind, tuple[str, ...]] = {
+    "kafka": ("ALL-COURSE", "ALL-COURSE-PY-SRC", "ALL-COURSE-PY-SRC-KAFKA"),
+    "notebook": ("ALL-COURSE",),
+    "pypi": ("ALL-COURSE", "ALL-COURSE-PY-SRC"),
+    "src": ("ALL-COURSE", "ALL-COURSE-PY-SRC"),
+    "ts": ("ALL-COURSE",),
+}
 
 
 def infer_layers(
     *,
     repo_root: Path,
-    repo_slug: str,
+    repo_name: str,
     files: set[str],
 ) -> list[str]:
-    """Infer additive template layers for a repository."""
-    normalized_slug = repo_slug.lower()
+    """Infer additive template layers for a repository.
 
-    if "package.json" in files and "pyproject.toml" not in files:
-        layers = ["ALL", "ALL-TS"]
-    elif "notebook" in normalized_slug or normalized_slug.endswith("-notebooks"):
-        layers = ["ALL", "ALL-PY", "ALL-PY-NB"]
-    elif "kafka" in normalized_slug:
-        layers = ["ALL", "ALL-PY", "ALL-PY-KAFKA"]
-    elif normalized_slug == "dc-up" or _looks_like_pypi_package(repo_root):
-        layers = ["ALL", "ALL-PY", "ALL-PY-SRC", "ALL-PY-PYPI"]
-    else:
-        layers = ["ALL", "ALL-PY", "ALL-PY-SRC"]
+    The base layers describe the repo's stack. If the repo is a course repo,
+    the matching course overlay is appended AFTER the base so the educational
+    files override their ALL / ALL-PY counterparts (last layer wins).
+    """
+    slug = repo_name.lower()
+    kind = _classify_stack(repo_root=repo_root, slug=slug, files=files)
 
-    if _looks_like_course_repo(repo_slug=repo_slug, files=files):
-        layers.append("ALL-COURSE")
+    layers: list[str] = list(BASE_LAYERS[kind])
+
+    if _looks_like_course_repo(repo_name_only=repo_name, files=files):
+        layers.extend(COURSE_OVERLAYS[kind])
 
     return layers
+
+
+def _classify_stack(
+    *,
+    repo_root: Path,
+    slug: str,
+    files: set[str],
+) -> StackKind:
+    """Classify a repository into one base stack kind (first match wins).
+
+    Precedence is preserved from the original if/elif chain. This is the one
+    place to special-case 'insights-' or 'ml-' later if they need it.
+    """
+    if "package.json" in files and "pyproject.toml" not in files:
+        return "ts"
+    if "notebook" in slug or slug.endswith("-notebooks"):
+        return "notebook"
+    if "kafka" in slug:
+        return "kafka"
+    if slug == "dc-up" or _looks_like_pypi_package(repo_root):
+        return "pypi"
+    return "src"
 
 
 def _has_console_scripts(project: TomlTable) -> bool:
@@ -106,9 +156,9 @@ def _as_bool(value: object) -> bool:
     return False
 
 
-def _looks_like_course_repo(*, repo_slug: str, files: set[str]) -> bool:
+def _looks_like_course_repo(*, repo_name_only: str, files: set[str]) -> bool:
     """Return whether a repository looks like a course project repo."""
-    normalized_slug = repo_slug.lower()
+    normalized_slug = repo_name_only.lower()
 
     if not normalized_slug.startswith(COURSE_PREFIXES):
         return False

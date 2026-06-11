@@ -1,61 +1,28 @@
-# ./AGENTS.md
-
-## Scope
-
-- This repository defines constitutional rules, schemas, and validation logic.
-- Changes must preserve:
-  - determinism
-  - cross-platform compatibility
-  - data-driven definitions
-- Do not introduce hidden logic where declarative structure is possible.
-- Prefer explicit, inspectable structure over implicit behavior.
+# .\AGENTS.md (ALL-PY)
 
 ## WHY
 
-- This repo uses a uniform, reproducible workflow based on **uv** and **pyproject.toml**.
-- These instructions exist to prevent tool drift (e.g., pip) and OS mismatch.
+This repository uses a uniform, reproducible Python workflow
+based on `uv` and `pyproject.toml`.
 
-## Requirements
+These instructions exist to prevent tool drift, especially accidental use of
+`pip` commands or OS-specific workflows.
 
-- Use **uv** for all environment, dependency, and run commands in this repository.
-- Do **not** recommend or use `pip install ...` as the primary workflow.
-- The canonical Python version is defined in `.python-version`.
-- Commands and guidance must work on Windows, macOS, and Linux.
-- If shell-specific commands are unavoidable, provide both:
-  - PowerShell (Windows)
-  - bash/zsh (macOS/Linux)
+## Python Workflow Requirements
 
-## Quickstart
+Use `uv` for Python environment, dependency, and run commands.
+Do not recommend or use `pip install` as the primary workflow.
+This repository targets a specific Python version pinned through `uv`.
+Use repository-defined dependency groups rather than inventing ad hoc install
+commands.
 
-- Install **uv** using the official method for your OS.
-- Keep uv current.
-- Pin Python version for this project using uv.
-- Sync dependencies (dev + docs) and upgrade.
+## Common Commands
 
-```shell
-uv self update
-uv python pin $(cat .python-version)
-uv sync --extra dev --extra docs --upgrade
-```
+Read README.md for common commands and follow that approach.
 
-## Common Tasks
+## Python Style
 
-Run all commands via **uv**.
-
-Lint / format:
-
-```shell
-uv run python -m ruff format .
-uv run python -m ruff check . --fix
-```
-
-Build documentation:
-
-```shell
-uv run python -m zensical build
-```
-
-## pre-commit
-
-- pre-commit runs only on tracked / staged files.
-- Developers should `git add -A` files before expecting hooks to run.
+Follow the repository Ruff configuration.
+Do not replace the configured lint policy with generic Ruff defaults.
+Do not suggest broad rule removals unless a specific rule is creating confirmed
+bad results for this repository.

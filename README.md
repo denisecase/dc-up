@@ -13,7 +13,7 @@
 [![Links](https://github.com/denisecase/dc-up/actions/workflows/links.yml/badge.svg?branch=main)](https://github.com/denisecase/dc-up/actions/workflows/links.yml)
 [![Dependabot](https://img.shields.io/badge/Dependabot-enabled-brightgreen.svg)](https://github.com/denisecase/dc-up/security)
 
-> > Command-line tool for bringing repositories up
+> Command-line tool for bringing repositories up
 > to a managed baseline using layered canonical templates.
 
 ## Template Source
@@ -52,6 +52,7 @@ uv lock --upgrade
 uv sync --extra dev --extra docs --upgrade
 
 uvx pre-commit install
+uvx pre-commit autoupdate
 
 git add -A
 uvx pre-commit run --all-files
