@@ -23,7 +23,11 @@
 ## Update a Repo based on Templates
 
 ```shell
+# see what files the command would update (optional, force latest)
 uvx dc-up
+uvx dc-up@latest
+
+# actually add and overwrite the files listed (CAUTION: DESTRUCTIVE)
 uvx dc-up --write
 ```
 
