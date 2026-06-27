@@ -15,6 +15,7 @@ def test_update_command_dry_run_with_local_templates(
     repo = tmp_path / "example-python-repo"
     repo.mkdir()
     (repo / ".git").mkdir()
+    (repo / "src").mkdir()
     (repo / "pyproject.toml").write_text(
         """
 [project]

@@ -17,6 +17,7 @@ FileStatus = Literal[
     "changed",
     "missing",
     "no-template",
+    "protected",
 ]
 
 

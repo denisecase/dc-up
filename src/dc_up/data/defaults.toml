@@ -1,0 +1,13 @@
+# src/dc_up/data/defaults.toml
+
+[classification]
+course_prefixes = [
+    "cintel-",
+    "datafun-",
+    "insights-",
+    "ml-",
+    "nlp-",
+    "streaming-"
+]
+
+course_pattern = "^[a-zA-Z]+-\\d{2}-.+$"

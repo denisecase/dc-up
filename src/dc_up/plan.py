@@ -23,6 +23,7 @@ def build_update_plan(
     *,
     target: RepositoryContext,
     source: TemplateSource,
+    protected_paths: frozenset[str] = frozenset(),
 ) -> UpdatePlan:
     """Build an update plan from discovered template files."""
     planned_files: list[PlannedFile] = []
@@ -71,7 +72,8 @@ def print_update_plan(plan: UpdatePlan, *, write: bool) -> None:
         f"{counts['current']} current, "
         f"{counts['changed']} changed, "
         f"{counts['missing']} missing, "
-        f"{counts['no-template']} no-template"
+        f"{counts['no-template']} no-template, "
+        f"{counts['protected']} protected"
     )
 
     if not write:
@@ -183,6 +185,7 @@ def _status_counts(plan: UpdatePlan) -> dict[FileStatus, int]:
         "changed": 0,
         "missing": 0,
         "no-template": 0,
+        "protected": 0,
     }
 
     for file in plan.files:
@@ -202,3 +205,5 @@ def _status_label(status: FileStatus, *, write: bool) -> str:
             return "ADDED" if write else "WOULD ADD"
         case "no-template":
             return "NO TEMPLATE"
+        case "protected":
+            return "PROTECTED"

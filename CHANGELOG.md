@@ -13,6 +13,17 @@ and this project adheres to **[Semantic Versioning](https://semver.org/spec/v2.0
 
 ---
 
+## [0.2.0] - 2026-06-27
+
+### Changed
+
+- Data-driven course prefixes
+- And a more flexible course repo detection if repo is named like this:
+  `prefix-NN-post`
+- better logic for ALL-PY (just tooling) vs ALL-PY-SRC with Ruff and Pyright
+
+---
+
 ## [0.1.2] - 2026-06-10
 
 ### Changed
@@ -128,7 +139,8 @@ git push origin :refs/tags/vX.Z.Y
 
 ## Links
 
-[Unreleased]: https://github.com/denisecase/dc-up/compare/v0.1.2...HEAD
+[Unreleased]: https://github.com/denisecase/dc-up/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/denisecase/dc-up/releases/tag/v0.2.0
 [0.1.2]: https://github.com/denisecase/dc-up/releases/tag/v0.1.2
 [0.1.1]: https://github.com/denisecase/dc-up/releases/tag/v0.1.1
 [0.1.0]: https://github.com/denisecase/dc-up/releases/tag/v0.1.0

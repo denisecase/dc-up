@@ -1,4 +1,4 @@
-# dc-up-todo.toml
+# src/dc_up/data/todo-surfaces.toml
 
 [review_paths]
 default = [
@@ -8,6 +8,7 @@ default = [
 pyproject = [
   "pyproject.toml",
   "uv.lock",
+  "docs/index.md",
 ]
 
 python_src = [
@@ -15,9 +16,7 @@ python_src = [
   "tests/**",
 ]
 
-zensical = [
-  "docs/index.md",
-]
+zensical = []
 
 course_python_src = [
   "docs/project-instructions.md",

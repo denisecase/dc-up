@@ -40,6 +40,7 @@ def run(
     plan = build_update_plan(
         target=repository,
         source=source,
+        protected_paths=frozenset({"docs/api.md", "README.md"}),
     )
 
     print_update_plan(plan, write=write)
