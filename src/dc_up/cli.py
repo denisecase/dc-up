@@ -10,6 +10,7 @@ uv run dc-up todo
 
 Equivalent uvx usage after release:
 uvx dc-up
+uvx dc-up@latest
 uvx dc-up --write
 uvx dc-up todo
 """
