@@ -30,6 +30,7 @@ class RepositoryContext:
     repo_name: str
     repo_url: str
     site_url: str
+    src_package: str
     files: frozenset[str]
     layers: tuple[str, ...]
 

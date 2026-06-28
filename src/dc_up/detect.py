@@ -38,6 +38,7 @@ def detect_repository(root: Path | None = None) -> RepositoryContext:
 
     repo_url = f"https://github.com/{github_handle}/{repo_name}"
     site_url = f"https://{github_handle}.github.io/{repo_name}/"
+    src_package = _detect_src_package(local_repo_root_directory)
 
     layers = tuple(
         infer_layers(
@@ -53,6 +54,7 @@ def detect_repository(root: Path | None = None) -> RepositoryContext:
         repo_name=repo_name,
         repo_url=repo_url,
         site_url=site_url,
+        src_package=src_package,
         files=frozenset(files),
         layers=layers,
     )
@@ -157,3 +159,14 @@ def _detect_github_handle(root: Path) -> str | None:
         return None
 
     return match.group("owner")
+
+
+def _detect_src_package(root: Path) -> str:
+    """Infer the primary package name from src/."""
+    src = root / "src"
+    if not src.exists():
+        return ""
+    for candidate in sorted(src.iterdir()):
+        if candidate.is_dir() and (candidate / "__init__.py").exists():
+            return candidate.name
+    return ""

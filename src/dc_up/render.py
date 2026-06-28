@@ -22,6 +22,7 @@ def render_template(text: str, target: RepositoryContext) -> str:
         "github_handle": target.github_handle,
         "repo_url": target.repo_url,
         "site_url": target.site_url,
+        "src_package": target.src_package,
     }
 
     rendered = text
